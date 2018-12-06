@@ -3,14 +3,13 @@ $( document ).ready(function() {
   let x = 0
   let y = 0
   let s, d, f = false
-  let spiders = []
+
   const spiderColors = ['purple', 'red', 'blue']
 
   document.addEventListener('mouseover', destroySpider)
 
   document.addEventListener('keydown', function(e){
     let target = e.key
-    console.log(target)
     //scenarios of all keys down
     if((!s && !d && !f)){
       if(target === 's'){
@@ -65,7 +64,6 @@ $( document ).ready(function() {
   function generateCoordinates(){
     x = Math.ceil(Math.random() * 800);
     y = Math.ceil(Math.random() * 800);
-    console.log(x, y)
     if((x <= 250 || x >= 550)){
       return [x, y]
     }else if((y <= 250 || y >= 550)){
