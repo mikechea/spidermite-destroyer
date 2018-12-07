@@ -3,8 +3,14 @@ $( document ).ready(function() {
   let x = 0
   let y = 0
   let s, d, f = false
+  let spidermitesKilled = 0
+  let spawnTime = 1200
+
+  const personalRecord = localStorage.getItem('personalRecord') || 0
 
   const spiderColors = ['purple', 'red', 'blue']
+
+  $('#personalRecord').html(`Personal Record: ${personalRecord}`)
 
   document.addEventListener('mouseover', destroySpider)
 
@@ -30,16 +36,37 @@ $( document ).ready(function() {
     f = false
   })
 
+  function checkSpidermtiesKilled(){
+    if(spidermitesKilled%10 === 0){
+      spawnTime -= 100
+      clearInterval()
+      setInterval(createNewSpider, spawnTime)
+    }
+  }
+
+  function updateSpidermitesKilled(){
+    $('#spidermitesKilled').html(`Spidermites Killed: ${spidermitesKilled}`)
+  }
+
   function destroySpider(e){
     let target = e.target
     if(target.tagName === 'circle' && s === true && target.style.fill === 'red'){
       target.parentNode.removeChild(target)
+      spidermitesKilled += 1
+      checkSpidermtiesKilled()
+      updateSpidermitesKilled()
     }
     if(target.tagName === 'circle' && d === true && target.style.fill === 'blue'){
       target.parentNode.removeChild(target)
+      spidermitesKilled += 1
+      checkSpidermtiesKilled()
+      updateSpidermitesKilled()
     }
     if(target.tagName === 'circle' && f === true && target.style.fill === 'purple'){
       target.parentNode.removeChild(target)
+      spidermitesKilled += 1
+      checkSpidermtiesKilled()
+      updateSpidermitesKilled()
     }
   }
 
@@ -56,6 +83,7 @@ $( document ).ready(function() {
         ((currentX >= xMin && currentX <= xMax) &&
           (currentY >= yMin && currentY <= yMax))
       ){
+        localStorage.setItem('personalRecord', spidermitesKilled)
         location.reload()
       }
     })
@@ -73,6 +101,8 @@ $( document ).ready(function() {
     }
   }
 
+
+
   function createNewSpider(){
     let coordinates = generateCoordinates()
     color = spiderColors[Math.floor(Math.random() * spiderColors.length)]
@@ -83,6 +113,15 @@ $( document ).ready(function() {
       .attr('r', 10)
       .style("fill", color)
       .transition()
+        .duration(1000)
+        .attr("transform", `translate(${Math.ceil(Math.random() * 100)}, ${Math.ceil(Math.random() * 100)})scale(1)`)
+      .transition()
+        .duration(1000)
+        .attr("transform", `translate(-${Math.ceil(Math.random() * 100)}, -${Math.ceil(Math.random() * 100)})scale(1)`)
+      .transition()
+        .duration(1000)
+        .attr("transform", `translate(${Math.ceil(Math.random() * 100)}, ${Math.ceil(Math.random() * 100)})scale(1)`)
+      .transition()
         .duration(5000)
         .attr("transform", `translate(${400-x},${400-y})scale(1)`)
   }
@@ -92,7 +131,7 @@ $( document ).ready(function() {
     requestAnimationFrame(draw)
   }
 
-  setInterval(createNewSpider, 1500)
+  setInterval(createNewSpider, spawnTime)
   requestAnimationFrame(draw)
 
 })
