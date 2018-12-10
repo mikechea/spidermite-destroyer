@@ -8,11 +8,31 @@
       src="./jquery-3.3.1.min.js">
     </script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script src="./app.js">
     </script>
   </head>
   <body>
-    <div style="height:100vh; text-align: center" >
+    <div id="ex1" class="modal">
+      <div id="score">
+      </div>
+      <label>Name: </label>
+      <input></input>
+      <button id="submitScore">Submit</button>
+      <div>
+        <a href="#" rel="modal:close">Close</a>
+        <a id="restartGame" href="#" rel="modal:close">Play Again</a>
+      </div>
+      <h2>
+        Top 10 Scores
+      </h2>
+      <ol id="topScores">
+      </ol>
+    </div>
+    <div id="gameContainer" style="height:100vh; text-align: center" >
+      <button id="restartGame" >Play Again</button>
+      <p style="display:inline-block;"><a id="endGameModal" href="#ex1" rel="modal:open"></a></p>
       <p style="font-size: 20px; display:inline-block;">Spidermite Destroyer</p>
       <p id="spidermitesKilled" style="color: red;font-size: 15px; display:inline-block;">Spidermites Killed: 0</p>
       <p id="personalRecord" style="color: green;font-size: 15px; display:inline-block;"></p>

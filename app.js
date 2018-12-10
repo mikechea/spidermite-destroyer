@@ -1,10 +1,10 @@
 $( document ).ready(function() {
-
   let x = 0
   let y = 0
   let s, d, f = false
   let spidermitesKilled = 0
-  let spawnTime = 1200
+  let spawnTime = 1000
+  let finalScore = 0
 
   const personalRecord = localStorage.getItem('personalRecord') || 0
 
@@ -13,6 +13,31 @@ $( document ).ready(function() {
   $('#personalRecord').html(`Personal Record: ${personalRecord}`)
 
   document.addEventListener('mouseover', destroySpider)
+
+  document.getElementById('restartGame').addEventListener('click', function(e){
+    console.log('click')
+    spawnSpidermite = setInterval(createNewSpider, spawnTime)
+  })
+
+  document.getElementById('submitScore').addEventListener('click', function(e){
+    console.log($('input').val());
+    fetch('http://localhost:3000/scores/create', {
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: JSON.stringify({
+        name: $('input').val(),
+        score: finalScore
+      })
+    })
+    .then(response => {response.json()})
+    .then((body) => {
+      $('#topScores').html('')
+      appendTopScores()
+    })
+  })
 
   document.addEventListener('keydown', function(e){
     let target = e.key
@@ -36,11 +61,23 @@ $( document ).ready(function() {
     f = false
   })
 
+
+  function appendTopScores(){
+    fetch(`http://localhost:3000/`)
+      .then(res => res.json())
+      .then((body) => {
+        // array of top scores, name, score, date
+        body.map((score) => {
+          return $('#topScores').append(`<li>${score.name}, ${score.score} spidermites killed.</li>`)
+        })
+      })
+  }
+
   function checkSpidermtiesKilled(){
     if(spidermitesKilled%10 === 0){
       spawnTime -= 100
-      clearInterval()
-      setInterval(createNewSpider, spawnTime)
+      clearInterval(spawnSpidermite)
+      spawnSpidermite = setInterval(createNewSpider, spawnTime)
     }
   }
 
@@ -83,10 +120,23 @@ $( document ).ready(function() {
         ((currentX >= xMin && currentX <= xMax) &&
           (currentY >= yMin && currentY <= yMax))
       ){
-        localStorage.setItem('personalRecord', spidermitesKilled)
-        location.reload()
+        restartGame()
       }
     })
+  }
+
+  function restartGame(){
+    spidermitesKilled > personalRecord ?
+    (localStorage.setItem('personalRecord', spidermitesKilled)):
+    (null)
+    finalScore = spidermitesKilled
+    clearInterval(spawnSpidermite)
+    d3.selectAll('circle').remove()
+    $('#score').html(`<h1>Score: ${spidermitesKilled}</h1>`)
+    appendTopScores()
+    $('#endGameModal').click()
+    spawnTime = 1500
+    spidermitesKilled = 0
   }
 
   function generateCoordinates(){
@@ -100,8 +150,6 @@ $( document ).ready(function() {
       generateCoordinates()
     }
   }
-
-
 
   function createNewSpider(){
     let coordinates = generateCoordinates()
@@ -131,7 +179,7 @@ $( document ).ready(function() {
     requestAnimationFrame(draw)
   }
 
-  setInterval(createNewSpider, spawnTime)
+  var spawnSpidermite = setInterval(createNewSpider, spawnTime)
   requestAnimationFrame(draw)
 
 })
