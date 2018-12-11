@@ -1,8 +1,10 @@
 # spidermite-destroyer
 
-## How to play
+[Spidermite Destroy Demo](https://mikechea.github.io/)
 
-1. Open **index.html** in browser
+## How to play in development
+
+1. Open [Spidermite Destroy Demo](https://mikechea.github.io/) or **index.html**(in development) in browser
 
 2. Hover cursor over spidermites (colored circles) while holding down correct key corresponding to color:
   * Orange -> S
