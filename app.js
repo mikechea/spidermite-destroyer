@@ -6,7 +6,7 @@ $( document ).ready(function() {
   let spawnTime = 1000
   let finalScore = 0
 
-  const personalRecord = localStorage.getItem('personalRecord') || 0
+  let personalRecord = localStorage.getItem('personalRecord') || 0
 
   const spiderColors = ['purple', 'red', 'blue']
 
@@ -29,7 +29,6 @@ $( document ).ready(function() {
     })
     .then(response => {response.json()})
     .then((body) => {
-      $('#topScores').html('')
       appendTopScores()
     })
   })
@@ -64,6 +63,7 @@ $( document ).ready(function() {
 
 
   function appendTopScores(){
+    $('#topScores').html('')
     fetch(`https://glacial-dusk-21754.herokuapp.com/`)
       .then(res => res.json())
       .then((body) => {
