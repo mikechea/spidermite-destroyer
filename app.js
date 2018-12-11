@@ -127,9 +127,10 @@ $( document ).ready(function() {
   }
 
   function restartGame(){
-    spidermitesKilled > personalRecord ?
-    (localStorage.setItem('personalRecord', spidermitesKilled)):
-    (null)
+    if(spidermitesKilled > personalRecord){
+      localStorage.setItem('personalRecord', spidermitesKilled)
+      $('#personalRecord').html(`Personal Record: ${personalRecord}`)
+    }
     finalScore = spidermitesKilled
     clearInterval(spawnSpidermite)
     d3.selectAll('circle').remove()
