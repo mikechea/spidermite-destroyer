@@ -128,6 +128,7 @@ $( document ).ready(function() {
 
   function restartGame(){
     if(spidermitesKilled > personalRecord){
+      personalRecord = spidermitesKilled
       localStorage.setItem('personalRecord', spidermitesKilled)
       $('#personalRecord').html(`Personal Record: ${personalRecord}`)
     }
