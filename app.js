@@ -14,14 +14,9 @@ $( document ).ready(function() {
 
   document.addEventListener('mouseover', destroySpider)
 
-  document.getElementById('restartGame').addEventListener('click', function(e){
-    console.log('click')
-    spawnSpidermite = setInterval(createNewSpider, spawnTime)
-  })
-
   document.getElementById('submitScore').addEventListener('click', function(e){
     console.log($('input').val());
-    fetch('http://localhost:3000/scores/create', {
+    fetch('https://glacial-dusk-21754.herokuapp.com/scores/create', {
       method: 'POST',
       headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -61,9 +56,15 @@ $( document ).ready(function() {
     f = false
   })
 
+  $("#restartGame").click(function() {
+    console.log('clicked')
+    spawnTime = 1000
+    spawnSpidermite = setInterval(createNewSpider, spawnTime)
+  });
+
 
   function appendTopScores(){
-    fetch(`http://localhost:3000/`)
+    fetch(`https://glacial-dusk-21754.herokuapp.com/`)
       .then(res => res.json())
       .then((body) => {
         // array of top scores, name, score, date
